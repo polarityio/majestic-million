@@ -1,0 +1,62 @@
+<div>
+    <span class="p-key">Global Rank: </span>
+    <span class="p-value">{{details.GlobalRank}}</span>
+    {{#if (gt details.GlobalRankDiff 0)}}
+        {{fa-icon "arrow-up" class="green arrow-icon"}}<span class="green diff-text">+{{details.GlobalRankDiff}}</span>
+    {{else if (lt details.GlobalRankDiff 0)}}
+        {{fa-icon "arrow-down" class="p-red arrow-icon"}}<span class="p-red diff-text">{{details.GlobalRankDiff}}</span>
+    {{/if}}
+</div>
+<div>
+    <span class="p-key">TLD Rank: </span>
+    <span class="p-value">{{details.TldRank}}</span>
+    {{#if (gt details.TldRankDiff 0)}}
+        {{fa-icon "arrow-up" class="green arrow-icon"}}<span class="green diff-text">+{{details.TldRankDiff}}</span>
+    {{else if (lt details.TldRankDiff 0)}}
+        {{fa-icon "arrow-down" class="p-red arrow-icon"}}<span class="p-red diff-text">{{details.TldRankDiff}}</span>
+    {{/if}}
+</div>
+<div>
+    <span class="p-key">Ref Sub Nets: </span>
+    <span class="p-value">{{details.RefSubNets}}</span>
+    {{#if (gt details.RefSubNetsDiff 0)}}
+        {{fa-icon "arrow-up" class="green arrow-icon"}}<span class="green diff-text">+{{details.RefSubNetsDiff}}</span>
+    {{else if (lt details.RefSubNetsDiff 0)}}
+        {{fa-icon "arrow-down" class="p-red arrow-icon"}}<span class="p-red diff-text">{{details.RefSubNetsDiff}}</span>
+    {{/if}}
+</div>
+<div>
+    <span class="p-key">Ref IPs: </span>
+    <span class="p-value">{{details.RefIPs}}</span>
+    {{#if (gt details.RefIPsDiff 0)}}
+        {{fa-icon "arrow-up" class="green arrow-icon"}}<span class="green diff-text">+{{details.RefIPsDiff}}</span>
+    {{else if (lt details.RefIPsDiff 0)}}
+        {{fa-icon "arrow-down" class="p-red arrow-icon"}}<span class="p-red diff-text">{{details.RefIPsDiff}}</span>
+    {{/if}}
+</div>
+
+<div class="p-action mt-2" {{action "togglePrevious"}}>
+    {{#if showPrevious}}
+        {{fa-icon "caret-down" fixedWidth=true}} Hide Previous
+    {{else}}
+        {{fa-icon "caret-up" fixedWidth=true}} View Previous
+    {{/if}}
+</div>
+{{#if showPrevious}}
+    <div>
+        <span class="p-key">Prev Global Rank: </span>
+        <span class="p-value">{{details.PrevGlobalRank}}</span>
+    </div>
+    <div>
+        <span class="p-key">Prev Tld Rank: </span>
+        <span class="p-value">{{details.PrevTldRank}}</span>
+    </div>
+    <div>
+        <span class="p-key">Prev Ref Sub Nets: </span>
+        <span class="p-value">{{details.PrevRefSubNets}}</span>
+    </div>
+    <div>
+        <span class="p-key">Prev Ref IPs: </span>
+        <span class="p-value">{{details.PrevRefIPs}}</span>
+    </div>
+{{/if}}
