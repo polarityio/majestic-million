@@ -38,7 +38,7 @@ function doLookup(entities, options, cb) {
 
   entities.forEach((entity) => {
     if (domainLookup.has(entity.value.toLowerCase())) {
-      let domain = domainLookup.get(entity.value);
+      let domain = domainLookup.get(entity.value.toLowerCase());
       Logger.debug(domain);
       entityResults.push({
         entity: entity,
