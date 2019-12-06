@@ -1,8 +1,8 @@
 {
   "main": "./integration.js",
   "name": "MajesticMillion",
-  "description": "Returns information on Majestic Million domains",
-  "version": "3.0.0-beta",
+  "description": "Returns domain rank information on Majestic Million domains",
+  "version": "3.0.1-beta",
   "private": true,
   "dependencies": {
     "papaparse": "^5.1.0"
