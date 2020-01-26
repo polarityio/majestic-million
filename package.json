@@ -2,7 +2,7 @@
   "main": "./integration.js",
   "name": "MajesticMillion",
   "description": "Returns domain rank information on Majestic Million domains",
-  "version": "3.0.1-beta",
+  "version": "3.0.2",
   "private": true,
   "dependencies": {
     "papaparse": "^5.1.0"
