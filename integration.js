@@ -2,33 +2,54 @@
 
 const Papa = require('papaparse');
 const fs = require('fs');
+const redis = require('redis');
 
 let Logger;
 const domainLookup = new Map();
+let redisClient;
 
 function startup(logger) {
   Logger = logger;
   return function(cb) {
-    const csvAsString = fs.readFileSync('./data/majestic_million.csv', 'utf8');
-    let majesticDomains = Papa.parse(csvAsString, {
+    const csv = fs.createReadStream('./data/majestic_million.csv', 'utf8');
+    let rowCount = 0;
+    Papa.parse(csv, {
       header: true,
       skipEmptyLines: true,
       delimiter: ',',
-      quoteChar: '"'
+      quoteChar: '"',
+      step: (results, parser) => {
+        if(results.errors.length > 0){
+          return parser.abort();
+        }
+
+        let domain = results.data;
+        domain.GlobalRankDiff = domain.PrevGlobalRank - domain.GlobalRank;
+        domain.TldRankDiff = domain.PrevTldRank - domain.TldRank;
+        domain.RefSubNetsDiff = domain.PrevRefSubNets - domain.RefSubNets;
+        domain.RefIPsDiff = domain.PrevRefIPs - domain.RefIPs;
+        domainLookup.set(domain.Domain.toLowerCase(), domain);
+
+        if(rowCount % 100000 === 0){
+          Logger.info(rowCount, 'rowCount');
+          logMemoryUsage();
+        }
+        rowCount++;
+      },
+      error: (error, file) => {
+        Logger.error({ error }, 'Error parsing Majestic Million CSV File');
+      },
+      complete: () => {
+        logMemoryUsage();
+
+        cb(null);
+      }
     });
-    if (majesticDomains.errors.length > 0) {
-      Logger.error({ errors: majesticDomains.errors }, 'Encountered Errors Parsing File');
-    }
-    Logger.info(`Loaded ${majesticDomains.data.length} rows`);
-    majesticDomains.data.forEach((domain) => {
-      domain.GlobalRankDiff = domain.PrevGlobalRank - domain.GlobalRank;
-      domain.TldRankDiff = domain.PrevTldRank - domain.TldRank;
-      domain.RefSubNetsDiff = domain.PrevRefSubNets - domain.RefSubNets;
-      domain.RefIPsDiff = domain.PrevRefIPs - domain.RefIPs;
-      domainLookup.set(domain.Domain.toLowerCase(), domain);
-    });
-    cb(null);
   };
+}
+
+function logMemoryUsage(){
+  Logger.info(process.memoryUsage(), 'Memory Usage');
 }
 
 function doLookup(entities, options, cb) {
