@@ -2,24 +2,21 @@
 
 const Papa = require('papaparse');
 const fs = require('fs');
-const redis = require('redis');
 
 let Logger;
 const domainLookup = new Map();
-let redisClient;
 
 function startup(logger) {
   Logger = logger;
-  return function(cb) {
+  return function (cb) {
     const csv = fs.createReadStream('./data/majestic_million.csv', 'utf8');
-    let rowCount = 0;
     Papa.parse(csv, {
       header: true,
       skipEmptyLines: true,
       delimiter: ',',
       quoteChar: '"',
       step: (results, parser) => {
-        if(results.errors.length > 0){
+        if (results.errors.length > 0) {
           return parser.abort();
         }
 
@@ -29,14 +26,8 @@ function startup(logger) {
         domain.RefSubNetsDiff = domain.PrevRefSubNets - domain.RefSubNets;
         domain.RefIPsDiff = domain.PrevRefIPs - domain.RefIPs;
         domainLookup.set(domain.Domain.toLowerCase(), domain);
-
-        if(rowCount % 100000 === 0){
-          Logger.info(rowCount, 'rowCount');
-          logMemoryUsage();
-        }
-        rowCount++;
       },
-      error: (error, file) => {
+      error: (error) => {
         Logger.error({ error }, 'Error parsing Majestic Million CSV File');
       },
       complete: () => {
@@ -48,7 +39,7 @@ function startup(logger) {
   };
 }
 
-function logMemoryUsage(){
+function logMemoryUsage() {
   Logger.info(process.memoryUsage(), 'Memory Usage');
 }
 
