@@ -1,9 +1,9 @@
 module.exports = {
   name: 'Majestic Million',
-  description:
-    'Returns domain rank information on the million domains with the most referring subnets.',
+  description: 'Returns domain rank information on the million domains with the most referring subnets.',
   acronym: 'MJM',
   entityTypes: ['domain'],
+  defaultColor: 'light-gray',
   styles: ['./styles/majestic.less'],
   block: {
     component: {
