@@ -1,4 +1,5 @@
 {
+  "polarityIntegrationUuid": "d38acbb0-cce1-11ed-aeee-075d3490155d",
   "name": "Majestic Million",
   "description": "Returns domain rank information on the million domains with the most referring subnets.",
   "acronym": "MJM",
