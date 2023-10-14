@@ -5,6 +5,6 @@
   "description": "Returns domain rank information on Majestic Million domains",
   "private": true,
   "dependencies": {
-    "papaparse": "^5.3.2"
+    "papaparse": "^5.4.1"
   }
 }
